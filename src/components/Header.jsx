@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom"
+import { useAuth } from "../context/AuthProvider"
 
 export default function Header() {
+
+    const { cerrarSesion } = useAuth()
     return (
         <header className="px-4 py-5 bg-white border-b">
             <div className="md:flex md:justify-between items-center">
@@ -14,7 +17,9 @@ export default function Header() {
                     <Link to={"/proyectos"} className="font-bold uppercase">
                         Proyectos
                     </Link>
-                    <button type="button" className="text-white text-sm bg-sky-600 p-3 rounded-md uppercase font-bold">
+                    <button
+                        onClick={cerrarSesion}
+                        type="button" className="text-white text-sm bg-sky-600 p-3 rounded-md uppercase font-bold">
                         Cerra Sesión
                     </button>
                 </div>

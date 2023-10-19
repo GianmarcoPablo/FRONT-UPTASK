@@ -1,6 +1,7 @@
 import { FormularioProyecto } from "../components"
 
 export default function NuevoProyecto() {
+
     return (
         <>
             <h1 className='text-4xl font-black'>Crear Proyecto</h1>

@@ -11,7 +11,7 @@ export default function LoginPage() {
         password: ""
     })
     const [alerta, setAlerta] = useState({})
-
+    const navigate = useNavigate("")
     const { setAuth } = useAuth()
 
     const handleSubmit = async e => {
@@ -25,6 +25,7 @@ export default function LoginPage() {
             setAlerta({})
             localStorage.setItem("token", data.token)
             setAuth(data)
+            navigate("/proyectos")
         } catch (error) {
             setAlerta({ msg: error.response.data.msg, error: true })
         }

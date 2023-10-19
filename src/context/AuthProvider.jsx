@@ -1,16 +1,18 @@
 import { useContext, createContext, useState, useEffect } from "react"
 import clienteAxios from "../config/clienteAxios"
 import { useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
 const AuthContext = createContext()
 
 export const useAuth = () => useContext(AuthContext)
 
 export default function AuthProvider({ children }) {
-
+    const { pathname } = useLocation()
     const [auth, setAuth] = useState({})
     const [cargando, setCargando] = useState(true)
     const navigate = useNavigate()
+
     useEffect(() => {
         const autenticarUsuario = async () => {
             const token = localStorage.getItem("token")
@@ -28,7 +30,9 @@ export default function AuthProvider({ children }) {
             try {
                 const { data } = await clienteAxios.get(`/usuarios/perfil`, config)
                 setAuth(data)
-                navigate("/proyectos")
+                if (pathname === "/") {
+                    navigate("/proyectos")
+                }
             } catch (error) {
                 setAuth({})
             } finally {
@@ -38,12 +42,17 @@ export default function AuthProvider({ children }) {
         autenticarUsuario()
     }, [])
 
+    const cerrarSesion = () => {
+        localStorage.removeItem("token")
+        setAuth({})
+    }
 
     return (
         <AuthContext.Provider value={{
             setAuth,
             auth,
-            cargando
+            cargando,
+            cerrarSesion
         }}>
             {children}
         </AuthContext.Provider>

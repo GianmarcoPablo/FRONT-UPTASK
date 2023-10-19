@@ -1,5 +1,6 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useProyecto } from "../context/ProyectoProvider"
+import { useParams } from "react-router-dom"
 import Alerta from "./Alerta"
 
 export default function FormularioProyecto() {
@@ -10,7 +11,19 @@ export default function FormularioProyecto() {
         fechaEntrega: "",
         cliente: ""
     })
-    const { mostrarAlerta, alerta, submitProyecto } = useProyecto()
+    const { mostrarAlerta, alerta, submitProyecto, proyecto } = useProyecto()
+    const { id } = useParams()
+
+    useEffect(() => {
+        if (id) {
+            setDatos({
+                nombre: proyecto.nombre,
+                descripcion: proyecto.descripcion,
+                fechaEntrega: proyecto.fechaEntrega?.split("T")[0],
+                cliente: proyecto.cliente
+            })
+        }
+    }, [id])
 
     const handleSubmit = async e => {
         e.preventDefault()
@@ -18,7 +31,7 @@ export default function FormularioProyecto() {
             mostrarAlerta({ msg: "Todos los campos son obligatorios", error: true })
             return
         }
-        await submitProyecto(datos)
+        await submitProyecto({ ...datos, id })
         setDatos({
             nombre: "",
             descripcion: "",
@@ -112,7 +125,7 @@ export default function FormularioProyecto() {
             </div>
             <input
                 type="submit"
-                value={"Crear Proyecto"}
+                value={id ? "Editar Proyecto" : "Crear Proyecto"}
                 className="bg-sky-600 w-full p-3 uppercase font-bold text-white rounded-md cursor-pointer hover:bg-sky-700 transition-colors"
             />
         </form>

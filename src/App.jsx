@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { AuthLayout, RutaProtegida } from "./layout/index"
-import { LoginPage, RegistrarPage, OlvidePasswordPage, NuevoPassword, ConfirmarCuentaPage, ProyectosPage, NuevoProyecto, Proyecto } from "./pages/index"
+import { LoginPage, RegistrarPage, OlvidePasswordPage, NuevoPassword, ConfirmarCuentaPage, ProyectosPage, NuevoProyecto, Proyecto, EditarProyectoPage } from "./pages/index"
 import AuthProvider from "./context/AuthProvider"
 import ProyectoProvider from "./context/ProyectoProvider"
 
@@ -22,6 +22,7 @@ export default function App() {
                             <Route index element={<ProyectosPage />} />
                             <Route path="crear-proyecto" element={<NuevoProyecto />} />
                             <Route path=":id" element={<Proyecto />} />
+                            <Route path="editar/:id" element={<EditarProyectoPage />} />
                         </Route>
                     </Routes>
                 </ProyectoProvider>
