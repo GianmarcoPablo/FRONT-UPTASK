@@ -1,0 +1,5 @@
+export { default as Alerta } from "./Alerta"
+export { default as Header } from "./Header"
+export { default as Sidebar } from "./Sidebar"
+export { default as FormularioProyecto } from "./FormularioProyecto"
+export { default as PreviewProyecto } from "./PreviewProyecto"

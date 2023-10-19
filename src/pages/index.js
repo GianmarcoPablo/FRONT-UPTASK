@@ -1,0 +1,8 @@
+export { default as LoginPage } from "./LoginPage"
+export { default as RegistrarPage } from "./RegistrarPage"
+export { default as OlvidePasswordPage } from "./OlvidePasswordPage"
+export { default as NuevoPassword } from "./NuevoPassword"
+export { default as ConfirmarCuentaPage } from "./ConfirmarCuentaPage"
+export { default as ProyectosPage } from "./ProyectosPage"
+export { default as NuevoProyecto } from "./NuevoProyecto"
+export { default as Proyecto } from "./Proyecto"
