@@ -1,12 +1,11 @@
 import { useParams, Link } from "react-router-dom"
 import { useProyecto } from "../context/ProyectoProvider"
-import { useEffect, useState } from "react"
-import { ModalFormularioTarea } from "../components"
+import { useEffect } from "react"
+import { ModalFormularioTarea, Tarea, ModalEliminarTarea } from "../components"
 export default function Proyecto() {
 
     const { id } = useParams()
-    const { obtenerProyecto, proyecto, cargando } = useProyecto()
-    const [modal, setModal] = useState(false)
+    const { obtenerProyecto, proyecto, cargando, handleModalTarea } = useProyecto()
     useEffect(() => {
         obtenerProyecto(id)
     }, [])
@@ -32,7 +31,7 @@ export default function Proyecto() {
             </div>
 
             <button
-                onClick={() => setModal(true)}
+                onClick={handleModalTarea}
                 type="button"
                 className="text-sm px-5 py-3 w-full md:w-auto rounded-lg uppercase font-bold bg-sky-400 text-white text-center mt-5 flex gap-2 items-center justify-center hover:bg-sky-500 transition-colors"
             >
@@ -41,10 +40,14 @@ export default function Proyecto() {
                 </svg>
                 Nueva Tarea
             </button>
-            <ModalFormularioTarea
-                modal={modal}
-                setModal={setModal}
-            />
+            <p className="font-bold text-xl mt-10">Tareas del proyecto</p>
+            <div className="bg-white shadow mt-10 rounded-lg">
+                {proyecto?.tareas?.length ? proyecto?.tareas?.map(tarea => (
+                    <Tarea key={tarea._id} tarea={tarea} />
+                )) : <p className="text-center my-5 p-10">No hay tareas en este Proyecto</p>}
+            </div>
+            <ModalFormularioTarea />
+            <ModalEliminarTarea />
         </>
     )
 }
