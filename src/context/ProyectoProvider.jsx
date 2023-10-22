@@ -17,6 +17,7 @@ export default function ProyectoProvider({ children }) {
     const [tarea, setTarea] = useState({})
     const [colaborador, setColaborador] = useState({})
     const [modalEliminarColaborador, setModalEliminarColaborador] = useState(false)
+    const [buscador, setBuscador] = useState(false)
 
     const navigate = useNavigate()
     const mostrarAlerta = alerta => {
@@ -121,11 +122,16 @@ export default function ProyectoProvider({ children }) {
             }
             const { data } = await clienteAxios.get(`/proyectos/${id}`, config)
             setProyecto(data)
+            setAlerta({})
         } catch (error) {
+            navigate("/proyectos")
             setAlerta({
                 msg: error.response.data.msg,
                 error: true
             })
+            setTimeout(() => {
+                setAlerta({})
+            }, 3000)
         } finally {
             setCargando(false)
         }
@@ -285,6 +291,9 @@ export default function ProyectoProvider({ children }) {
                 error: false
             })
             setColaborador({})
+            setTimeout(() => {
+                setAlerta({})
+            }, 3000)
         } catch (error) {
             setAlerta({
                 msg: error.response.data.msg,
@@ -318,11 +327,36 @@ export default function ProyectoProvider({ children }) {
                 error: false
             })
             setColaborador({})
-            setAlerta({})
             setModalEliminarColaborador(false)
+            setTimeout(() => {
+                setAlerta({})
+            }, 3000);
         } catch (error) {
             console.log(error.response);
         }
+    }
+
+    const completarTarea = async (id) => {
+        try {
+            const token = localStorage.getItem("token")
+            if (!token) return
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            const { data } = await clienteAxios.post(`/tareas/estado/${id}`, {}, config)
+            const proyectoActualizado = { ...proyecto }
+            proyectoActualizado.tareas = proyectoActualizado.tareas.map(tareaState => tareaState._id === data._id ? data : tareaState)
+            setProyecto(proyectoActualizado)
+            setTarea({})
+        } catch (error) {
+            console.log(error.response);
+        }
+    }
+
+    const handleBuscador = () => {
+        setBuscador(!buscador)
     }
 
     return (
@@ -348,7 +382,10 @@ export default function ProyectoProvider({ children }) {
             agregarColaborador,
             handleModalEliminarColaborador,
             modalEliminarColaborador,
-            eliminarColaborador
+            eliminarColaborador,
+            completarTarea,
+            handleBuscador,
+            buscador
         }}>
             {children}
         </ProyectoContext.Provider>
